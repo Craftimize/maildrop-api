@@ -4,7 +4,7 @@ var exports = module.exports = {}
 
 const baseUrl = process.env.MAILDROP_URL || 'https://api.maildrop.cc/v2'
 
-exports.getInbox = (mailBox) => {
+exports.getInbox = (apiKey, mailBox) => {
     return new Promise((resolve, reject) => {
         if (!mailBox) return reject(new Error('mailBox required.'))
 
@@ -12,7 +12,10 @@ exports.getInbox = (mailBox) => {
             method: 'GET',
             url: baseUrl + '/mailbox/' + mailBox,
             json: true,
-            headers: { 'cache-control': 'no-cache' }
+            headers: {
+                'cache-control': 'no-cache',
+                'x-api-key': apiKey
+            }
         }
 
         request(options, (error, response, body) => {
@@ -22,7 +25,7 @@ exports.getInbox = (mailBox) => {
     })
 }
 
-exports.getEmail = (mailBox, emailId) => {
+exports.getEmail = (apiKey, mailBox, emailId) => {
     return new Promise((resolve, reject) => {
         if (!(mailBox && emailId)) return reject(new Error('mailBox required.'))
 
@@ -30,7 +33,10 @@ exports.getEmail = (mailBox, emailId) => {
             method: 'GET',
             url: baseUrl + '/mailbox/' + mailBox + '/' + emailId,
             json: true,
-            headers: { 'cache-control': 'no-cache' }
+            headers: {
+                'cache-control': 'no-cache',
+                'x-api-key': apiKey
+            }
         }
 
         request(options, (error, response, body) => {
@@ -40,7 +46,7 @@ exports.getEmail = (mailBox, emailId) => {
     })
 }
 
-exports.deleteEmail = (mailBox, emailId) => {
+exports.deleteEmail = (apiKey, mailBox, emailId) => {
     return new Promise((resolve, reject) => {
         if (!(mailBox && emailId)) {
             return reject(
@@ -52,7 +58,10 @@ exports.deleteEmail = (mailBox, emailId) => {
             method: 'DELETE',
             url: baseUrl + '/mailbox/' + mailBox + '/' + emailId,
             json: true,
-            headers: { 'cache-control': 'no-cache' }
+            headers: {
+                'cache-control': 'no-cache',
+                'x-api-key': apiKey
+            }
         }
 
         request(options, (error, response, body) => {
